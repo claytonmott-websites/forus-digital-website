@@ -56,7 +56,7 @@
   }
 
   /* Scroll reveal */
-  var reveals = d.querySelectorAll('.reveal');
+  var reveals = d.querySelectorAll('.reveal, .rail, .tl2-item');
   if (reduce || !('IntersectionObserver' in window)) {
     reveals.forEach(function (el) { el.classList.add('is-in'); });
   } else {

@@ -106,32 +106,35 @@ export const audiences = [
 export const news = [
   {
     slug: 'news-dotcooperation-partnership.html',
-    category: 'newsroom', categoryLabel: 'Newsroom',
-    date: '2026-09-10', dateLabel: '10 September 2026',
+    category: 'partnerships', categoryLabel: 'Partnership',
+    date: '2026-09-10', dateLabel: '10 September 2026', day: '10', my: 'Sep 2026', navTitle: 'FORUS × DotCooperation',
     title: 'FORUS and DotCooperation sign strategic partnership to expand trusted digital identity for African cooperatives',
+    short: 'FORUS and DotCooperation sign strategic partnership to expand trusted digital identity for African cooperatives.',
     excerpt: 'FORUS is appointed DotCooperation’s Strategic Promotional and Implementation Partner for Africa, combining the .coop digital identity ecosystem with FORUS’s cooperative network and implementation capability.',
     source: 'FORUS announcement'
   },
   {
     slug: 'news-world-agriculture-forum.html',
-    category: 'partnerships', categoryLabel: 'Partnerships',
-    date: '2026-09-10', dateLabel: '10 September 2026',
+    category: 'partnerships', categoryLabel: 'Partnership',
+    date: '2026-09-10', dateLabel: '10 September 2026', day: '10', my: 'Sep 2026', navTitle: 'FORUS × World Agriculture Forum',
     title: 'FORUS and World Agriculture Forum announce collaboration to strengthen farmer-owned cooperatives globally',
+    short: 'FORUS and World Agriculture Forum announce collaboration around the TerraNexus ecosystem.',
     excerpt: 'A strategic collaboration to support agricultural cooperatives and their members within the emerging TerraNexus ecosystem, combining WAF’s global agricultural network with FORUS digital infrastructure.',
     source: 'Joint announcement'
   },
   {
     slug: 'news-connect-with-a-coop.html',
     category: 'newsroom', categoryLabel: 'Newsroom',
-    date: '2026-07-04', dateLabel: '4 July 2026',
+    date: '2026-07-04', dateLabel: '4 July 2026', day: '04', my: 'Jul 2026', navTitle: 'Connect with a Coop',
     title: 'Connect with a Coop: African and Indian cooperatives join hands on International Day of Cooperatives',
+    short: 'Connect with a Coop: African and Indian cooperatives join hands.',
     excerpt: 'FORUS-Grow, Unati / UAMMCL and The Dream sign a Memorandum of Understanding to build a cooperative-led digital finance, farmer and community impact ecosystem linking Africa and India.',
     source: 'FORUS announcement'
   },
   {
     slug: 'perspective-infrastructure-not-applications.html',
-    category: 'perspectives', categoryLabel: 'Perspectives',
-    date: '2026-09-12', dateLabel: 'September 2026',
+    category: 'perspectives', categoryLabel: 'Perspective',
+    date: '2026-09-12', dateLabel: 'September 2026', day: '12', my: 'Sep 2026', navTitle: 'Why infrastructure, not an application',
     title: 'Why we build infrastructure, not a single application',
     excerpt: 'The same underlying infrastructure can sit beneath very different experiences. A note on how FORUS thinks about the layer below the surface.',
     source: 'FORUS perspective', draft: true

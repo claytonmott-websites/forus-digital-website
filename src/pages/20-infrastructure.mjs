@@ -1,4 +1,4 @@
-import { icon, pageHero, split, statement, ideas, pillarsSection, capGroups, principles, ctaBand, ctaFinal } from '../components.mjs';
+import { icon, pageHero, split, statement, ideas, pillarsSection, capRows, principles, ctaBand, ctaFinal } from '../components.mjs';
 import { pillars } from '../data.mjs';
 
 const overview = {
@@ -65,7 +65,7 @@ ${pageHero({
 })}
 <section class="section" style="padding-top:0">
   <div class="container">
-    ${capGroups([
+    ${capRows([
       { glyph: 'identity', title: 'Identity and access', copy: 'Trusted points of participation for people and organisations, with secure sign-in and organisation profiles.', points: ['Person and organisation identity', 'Secure sign-in across services', 'Organisation and membership profiles'] },
       { glyph: 'money', title: 'Money and transactions', copy: 'The movement and coordination of value between participants through approved providers.', points: ['Payments, collections and settlements', 'Contributions, levies and payouts', 'Reconciliation and settlement records'] },
       { glyph: 'operations', title: 'Platforms and operations', copy: 'Digital environments for organisations to communicate, organise and run their operations.', points: ['Member communication and engagement', 'Governance notices and decisions', 'Teams, roles, workflow and reporting'] },

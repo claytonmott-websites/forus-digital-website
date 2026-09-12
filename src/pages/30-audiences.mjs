@@ -1,4 +1,4 @@
-import { icon, pageHero, split, statement, routes, principles, blocks, ctaBand, ctaFinal } from '../components.mjs';
+import { icon, pageHero, split, statement, routes, principles, blocks, themeRows, ladder, ctaBand, ctaFinal } from '../components.mjs';
 import { site, audiences } from '../data.mjs';
 
 const overview = {
@@ -17,24 +17,34 @@ ${ctaFinal()}
 `
 };
 
-const audiencePage = ({ file, title, eyebrow, h1, lead, img, focus, alt, statementTitle, statementCopy, themes, primary, secondary, description }) => ({
-  file, title, active: 'work', theme: 'light', description,
-  body: `
-${pageHero({ eyebrow: `Who we work with · ${eyebrow}`, title: h1, lead, media: { src: img, focus, alt }, ctas: `${primary}${secondary}` })}
-${statement({ eyebrow: 'How FORUS helps', title: statementTitle, copy: statementCopy, surface: 'on-paper' })}
-<section class="section">
+const audiencePage = ({ file, title, eyebrow, h1, lead, img, focus, alt, statementTitle, statementCopy, themes, primary, secondary, description, variant = 'photo-right' }) => {
+  const hero = variant === 'dark'
+    ? pageHero({ eyebrow: `Who we work with · ${eyebrow}`, title: h1, lead, dark: true, ring: true, ctas: `${primary}${secondary}` })
+    : variant === 'statement'
+    ? pageHero({ eyebrow: `Who we work with · ${eyebrow}`, title: h1, lead, ring: true, surface: 'on-paper', ctas: `${primary}${secondary}` })
+    : pageHero({ eyebrow: `Who we work with · ${eyebrow}`, title: h1, lead, media: { src: img, focus, alt }, mediaLeft: variant === 'photo-left', ctas: `${primary}${secondary}` });
+  const themesBlock = variant === 'dark'
+    ? `<div class="split"><div class="split-sticky reveal"><span class="eyebrow">What the infrastructure can support</span><h2>Built on a shared foundation.</h2></div>${ladder(themes.map(t => ({ title: t.title, line: t.copy })))}</div>`
+    : variant === 'statement'
+    ? `<div class="section-head"><span class="eyebrow reveal">What the infrastructure can support</span><h2 class="reveal" data-delay="1">Built on a shared foundation.</h2></div>${themeRows(themes)}`
+    : variant === 'photo-left'
+    ? `<div class="section-head"><span class="eyebrow reveal">What the infrastructure can support</span><h2 class="reveal" data-delay="1">Built on a shared foundation.</h2></div>${principles(themes, 'two')}`
+    : `<div class="section-head"><span class="eyebrow reveal">What the infrastructure can support</span><h2 class="reveal" data-delay="1">Built on a shared foundation.</h2></div>${principles(themes)}`;
+  return {
+    file, title, active: 'work', theme: variant === 'dark' ? 'dark' : 'light', description,
+    body: `
+${hero}
+${statement({ eyebrow: 'How FORUS helps', title: statementTitle, copy: statementCopy, surface: variant === 'statement' ? '' : 'on-paper' })}
+<section class="section${variant === 'statement' ? ' on-paper' : ''}">
   <div class="container">
-    <div class="section-head">
-      <span class="eyebrow reveal">What the infrastructure can support</span>
-      <h2 class="reveal" data-delay="1">Built on a shared foundation.</h2>
-    </div>
-    ${principles(themes)}
+    ${themesBlock}
     <p class="footnote reveal">Specific capabilities, availability and implementation requirements vary by market, partner and deployment.</p>
   </div>
 </section>
-${ctaBand({ title: 'What could we build together?', copy: 'FORUS works with organisations seeking to connect people, systems, services and economic opportunity.' })}
+${ctaBand({ title: 'What could we build together?', copy: 'FORUS works with organisations seeking to connect people, systems, services and economic opportunity.', surface: variant === 'statement' ? '' : 'on-paper' })}
 `
-});
+  };
+};
 
 const cooperatives = audiencePage({
   file: 'cooperatives.html', title: 'Cooperatives', eyebrow: 'Cooperatives',
@@ -73,7 +83,8 @@ const financial = audiencePage({
     { title: 'Institutional integration', copy: 'Approved interfaces through which institutional systems connect to FORUS infrastructure.' },
     { title: 'Responsible deployment', copy: 'Regulated services are activated only with the appropriate providers and approvals in place.' }
   ],
-  description: 'FORUS infrastructure can help financial institutions connect services into new communities, platforms and economic networks.'
+  description: 'FORUS infrastructure can help financial institutions connect services into new communities, platforms and economic networks.',
+  variant: 'dark'
 });
 
 const government = audiencePage({
@@ -93,7 +104,8 @@ const government = audiencePage({
     { title: 'Interoperability', copy: 'Designed to connect with existing institutional systems through approved interfaces.' },
     { title: 'Market-aware deployment', copy: 'Each deployment is scoped to its country, sector and the approvals that apply.' }
   ],
-  description: 'FORUS provides digital infrastructure that can support connected public programmes, institutional services and economic participation.'
+  description: 'FORUS provides digital infrastructure that can support connected public programmes, institutional services and economic participation.',
+  variant: 'photo-left'
 });
 
 const enterprise = audiencePage({
@@ -113,7 +125,8 @@ const enterprise = audiencePage({
     { title: 'Data and insight', copy: 'Activity records and reporting across the network.' },
     { title: 'Integration', copy: 'Approved interfaces that connect existing enterprise systems to the network.' }
   ],
-  description: 'FORUS enables organisations to connect customers, members, partners, suppliers or participants through shared digital infrastructure.'
+  description: 'FORUS enables organisations to connect customers, members, partners, suppliers or participants through shared digital infrastructure.',
+  variant: 'statement'
 });
 
 const investors = {

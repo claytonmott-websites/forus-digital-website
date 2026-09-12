@@ -1,4 +1,4 @@
-import { icon, pageHero, split, statement, featurePanel, implList, cases, blocks, principles, ctaBand, ctaFinal, statusTag } from '../components.mjs';
+import { icon, pageHero, split, statement, featureSplit, implList, cases, blocks, principles, ctaBand, ctaFinal, statusTag } from '../components.mjs';
 import { site, implementations, partners } from '../data.mjs';
 
 const overview = {
@@ -22,12 +22,9 @@ ${statement({
       <span class="eyebrow reveal">The cooperative ecosystem</span>
       <h2 class="reveal" data-delay="1">FORUS.coop is one major ecosystem built on FORUS infrastructure.</h2>
     </div>
-    ${featurePanel({
-      badge: 'Live',
-      title: 'Digital infrastructure for the cooperative economy.',
-      copy: '<p>FORUS.coop is operated by FORUS Digital Cooperative and connects cooperatives, federations and apex bodies with their members, services and opportunities. It is the public-facing cooperative ecosystem and remains separate from the corporate group.</p>',
-      cta: `<div class="btn-group"><a class="btn btn-primary" href="${site.coop}" target="_blank" rel="noopener">Explore FORUS.coop ${icon.ext}</a><a class="btn btn-outline" href="cooperatives.html">For cooperatives</a></div>`,
-      img: 'market', focus: '50% 40%', alt: 'Traders and customers at a busy city market'
+    ${featureSplit({
+      lead: 'Digital infrastructure for the cooperative economy, operated by FORUS Digital Cooperative. The public-facing cooperative ecosystem remains separate from the corporate group.',
+      cta: `<div class="btn-group"><a class="btn btn-primary" href="${site.coop}" target="_blank" rel="noopener">Explore FORUS.coop ${icon.ext}</a><a class="btn btn-outline" href="cooperatives.html">For cooperatives</a></div>`
     })}
   </div>
 </section>

@@ -1,6 +1,6 @@
 # forus.digital · corporate website rebuild
 
-**Version 1.0 · 12 September 2026 · Creative starting point for review**
+**Version 1.1 · 12 September 2026 · Refinement pass: activity layer and art direction**
 
 A complete, responsive, working prototype of the new FORUS Digital corporate website. This is a full strategic redesign: nothing from the old site's structure, copy, hierarchy or layout is inherited. The old site and the forus.coop review build were used only for brand assets, verified facts and technical convention.
 
@@ -41,6 +41,10 @@ node src/build.mjs
 
 The build refuses to write a page that contains an em dash.
 
+## Homepage order (version 1.1)
+
+Hero · FORUS Today activity layer · What FORUS is · Who we work with · Infrastructure · Infrastructure in action · Our story · Final CTA. The activity layer shows one featured item and two quieter headlines with large date numerals, drawn from the same verified items as the FORUS Today page; the former news card section at the foot of the page was removed so nothing appears twice. The FORUS Today dropdown carries a small "Latest activity" column with the two most recent items.
+
 ## Sitemap and navigation
 
 Primary navigation (five items plus two utilities): FORUS · Infrastructure · Who We Work With · Ecosystem · FORUS Today · FORUS.coop ↗ · Partner with FORUS.
@@ -63,7 +67,8 @@ Desktop dropdowns open on hover and on click or keyboard. FORUS.coop is a Night 
 - **Palette.** White and a cool paper tint carry most of the site. Night Blue anchors the dark full-bleed moments (infrastructure pillars, closing CTA, footer, selected heroes). Deep Blue for links and hover. Medium Blue for eyebrows on light, Light Blue on dark. The eight-colour spectrum appears only inside the mark. No gradients, no glow.
 - **Type.** Montserrat throughout. Display up to 92px at 700 weight with tight tracking. Eyebrows 600, uppercase, tracked. Body 400 at 1.7 line height.
 - **Layout.** 1280px container on the 8px mini-unit. Hairline rules structure content instead of card stacks. Editorial split sections with a sticky headline column. Rectangular buttons with a 4px radius.
-- **Motion.** Hero entrance, scroll reveal, hover underlines and arrow nudges, the slow network field in the hero, and slow pulses of value along the pillars figure. Everything is disabled under `prefers-reduced-motion`.
+- **Motion.** Hero entrance, scroll reveal, hover underlines and arrow nudges, the slow network field in the hero, slow pulses of value along the pillars figure, rails that draw in and timeline nodes that activate. Everything is disabled under `prefers-reduced-motion`.
+- **Typographic and geometric systems (1.1).** Big date numerals (`.bigdate`), the numbered ladder list with a rail (`.ladder`), the oversized outlined numeral in the story band, the two-layer "Technology underneath. Opportunity above it." moment on About, the large-date timeline on Our Story, numbered capability rows, ring geometry on selected heroes, vertical gutter labels on wide screens, and cropped marks as watermarks. Cards now appear only where they aid navigation.
 - **Photography.** Used in five places only: the FORUS.coop feature, the story band, and the four audience page heroes. Each image carries a `--focus` custom property for its crop.
 
 ## Content rules the build follows
@@ -80,7 +85,7 @@ Desktop dropdowns open on hover and on click or keyboard. FORUS.coop is a Night 
 
 | Item | Where | Current treatment |
 |---|---|---|
-| Founding dates and early milestones | `our-story.html` timeline | Two entries marked Placeholder; later entries use verified dates |
+| Earlier milestones | `our-story.html` timeline | Verified milestones only; the first entry is the founding question without a specific date. Earlier chapters can be added once confirmed |
 | Registered address | `contact.html` | Marked to be confirmed |
 | Media and investor contact addresses | Media, Investors, Contact, articles | All route to `info@forus.digital` with a subject line. Replace with dedicated addresses if preferred |
 | WOW Connect status | Ecosystem, Infrastructure in Action | Shown as Pilot, matching the capability catalogue. The press release uses present tense; confirm if it should read In implementation |

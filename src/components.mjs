@@ -41,10 +41,13 @@ export function header(active, theme) {
   const items = nav.map(n => `
       <li class="nav-item has-menu${n.key === active ? ' is-active' : ''}">
         <a class="nav-link" href="${n.href}" aria-haspopup="true" aria-expanded="false">${n.label}${icon.down}</a>
-        <div class="nav-menu" role="group" aria-label="${n.label}">
+        <div class="nav-menu${n.key === 'today' ? ' wide' : ''}" role="group" aria-label="${n.label}">
+          <div class="nav-menu-col">
           ${n.items.map(i => i.ext
             ? `<a class="ext" href="${i.href}" target="_blank" rel="noopener">${i.label}${icon.ext}</a>`
             : `<a href="${i.href}">${i.label}</a>`).join('\n          ')}
+          </div>
+          ${n.key === 'today' ? `<div class="nav-latest"><span class="nav-menu-label">Latest activity</span>${news.filter(x => !x.draft).slice(0, 2).map(x => `<a href="${x.slug}"><time datetime="${x.date}">${x.day} ${x.my.split(' ')[0]}</time><span>${x.navTitle}</span></a>`).join('')}<a class="nav-latest-all" href="forus-today.html">View all ${icon.arrow}</a></div>` : ''}
         </div>
       </li>`).join('');
   return `
@@ -152,22 +155,22 @@ ${scripts.map(s => `<script src="${s}" defer></script>`).join('\n')}
 }
 
 /* ---------- Page hero ---------- */
-export function pageHero({ eyebrow, title, lead, ctas = '', dark = false, media = null, facts = null, mark = true, rule = false }) {
+export function pageHero({ eyebrow, title, lead, ctas = '', dark = false, media = null, facts = null, mark = true, rule = false, ring = false, mediaLeft = false, surface = '' }) {
   const inner = `
       <span class="eyebrow reveal">${eyebrow}</span>
       <h1 class="reveal" data-delay="1">${title}</h1>
       ${lead ? `<p class="lead reveal" data-delay="2">${lead}</p>` : ''}
       ${ctas ? `<div class="btn-group reveal" data-delay="3">${ctas}</div>` : ''}`;
   const body = media ? `
-    <div class="page-hero-grid">
+    <div class="page-hero-grid${mediaLeft ? ' media-left' : ''}">
       <div>${inner}</div>
       <div class="page-hero-media reveal" data-delay="2" style="--focus:${media.focus || '50% 50%'}">
         <img src="assets/img/${media.src}-1200.jpg" srcset="assets/img/${media.src}-720.jpg 720w, assets/img/${media.src}-1200.jpg 1200w" sizes="(max-width: 860px) 100vw, 40vw" alt="${esc(media.alt)}" fetchpriority="high">
       </div>
     </div>` : inner;
   return `
-<section class="page-hero${dark ? ' on-dark' : ''}${media ? ' has-media' : ''}">
-  ${mark && !media ? `<div class="hero-mark" aria-hidden="true">${dark ? MARK_WHITE : MARK_COLOUR}</div>` : ''}
+<section class="page-hero${dark ? ' on-dark' : ''}${media ? ' has-media' : ''}${surface ? ' ' + surface : ''}">
+  ${ring ? heroRing() : (mark && !media ? `<div class="hero-mark" aria-hidden="true">${dark ? MARK_WHITE : MARK_COLOUR}</div>` : '')}
   <div class="container">
     ${body}
     ${facts ? `<div class="hero-rule"></div><div class="hero-facts reveal">${facts.map(f => `<span><strong>${f[0]}</strong> ${f[1]}</span>`).join('')}</div>` : (rule ? '<div class="hero-rule"></div>' : '')}
@@ -395,9 +398,10 @@ export function capGroups(items) {
 }
 
 export function cases(items = implementations) {
-  return items.map(it => `
-    <article class="case" id="${it.key}">
+  return items.map((it, i) => `
+    <article class="case" id="${it.key}" data-status="${it.status}">
       <div class="case-side reveal">
+        <span class="case-num" aria-hidden="true">0${i + 1}</span>
         ${statusTag(it.status, it.statusLabel)}
         <h3>${it.title}</h3>
         <p class="case-where">${it.where}</p>
@@ -459,3 +463,145 @@ export function article({ item, standfirst, body, aside = '' }) {
 
 export const markColour = MARK_COLOUR;
 export const markWhite = MARK_WHITE;
+
+
+/* ---------- Refinement pass components ---------- */
+export function bigDate(n, size = '') {
+  return `<time class="bigdate ${size}" datetime="${n.date}"><span class="bd-day">${n.day}</span><span class="bd-my">${n.my.replace(' ', '<br>')}</span></time>`;
+}
+
+/* Homepage activity layer: one featured item, two quieter items */
+export function todaySection(items = news.filter(n => !n.draft).slice(0, 3)) {
+  const [f, ...rest] = items;
+  return `
+<section class="today on-paper" aria-labelledby="today-h">
+  <div class="container has-vlabel">
+    <span class="vlabel" aria-hidden="true">Current activity</span>
+    <div class="today-head">
+      <span class="eyebrow" id="today-h">FORUS Today</span>
+      <p class="today-sub">Latest from across the FORUS ecosystem.</p>
+      <a class="link" href="forus-today.html">View FORUS Today ${icon.arrow}</a>
+    </div>
+    <div class="today-grid">
+      <a class="today-feature reveal" href="${f.slug}">
+        <div class="today-meta">${bigDate(f)}<span class="cat">${f.categoryLabel}</span></div>
+        <h2>${f.short}</h2>
+        <span class="link">Read ${icon.arrow}</span>
+      </a>
+      <div class="today-side">
+        ${rest.map((n, i) => `<a class="today-item reveal" data-delay="${i + 1}" href="${n.slug}">
+          ${bigDate(n, 'sm')}
+          <div><span class="cat">${n.categoryLabel}</span><h3>${n.short}</h3></div>
+        </a>`).join('')}
+      </div>
+    </div>
+  </div>
+</section>`;
+}
+
+/* Numbered typographic list with a rail */
+export function ladder(items, cls = '') {
+  return `<ol class="ladder rail ${cls}">${items.map((it, i) => `<li class="reveal" data-delay="${i + 1}"><span class="num">0${i + 1}</span><div><h3>${it.title}</h3><p>${it.line || it.copy}</p></div></li>`).join('')}</ol>`;
+}
+
+/* FORUS.coop feature without a box */
+export function featureSplit({ eyebrow = 'Cooperative ecosystem', status = 'live', statusLabel = 'Live', title = 'FORUS.coop', lead = 'Digital infrastructure for the cooperative economy.', cta, img = 'market', focus = '50% 40%', alt = 'Traders and customers at a busy city market' }) {
+  return `
+    <div class="feature-split">
+      <div class="fs-media reveal" style="--focus:${focus}">
+        <img src="assets/img/${img}-1200.jpg" srcset="assets/img/${img}-720.jpg 720w, assets/img/${img}-1200.jpg 1200w, assets/img/${img}-1672.jpg 1672w" sizes="(max-width: 860px) 100vw, 50vw" alt="${esc(alt)}" loading="lazy">
+        <span class="fs-ring" aria-hidden="true"></span>
+        <span class="fs-mark" aria-hidden="true">${MARK_COLOUR}</span>
+      </div>
+      <div class="fs-body reveal" data-delay="1">
+        <span class="eyebrow">${eyebrow} ${statusTag(status, statusLabel)}</span>
+        <h3>${title}</h3>
+        <p class="lead">${lead}</p>
+        ${cta}
+      </div>
+    </div>`;
+}
+
+/* Implementation rows: concise evidence list */
+export function implRows(items) {
+  return `
+    <div class="impl-rows">
+      ${items.map((it, i) => `<a class="impl-row reveal" data-delay="${Math.min(i + 1, 4)}" href="${it.href}"${it.ext ? ' target="_blank" rel="noopener"' : ''}>
+        <span class="impl-num">0${i + 1}</span>
+        <div><h3>${it.title}</h3><p class="impl-where">${it.where}</p></div>
+        ${statusTag(it.status, it.statusLabel)}
+        <span class="row-arrow">${it.ext ? icon.ext : icon.arrow}</span>
+      </a>`).join('')}
+    </div>`;
+}
+
+/* Story as typography: oversized numeral, short copy */
+export function storyTypo() {
+  return `
+<section class="section on-grey story-typo">
+  <div class="container">
+    <div class="story-grid">
+      <div class="story-num reveal" aria-hidden="true">10<small>years in the making</small></div>
+      <div class="story-body reveal" data-delay="1">
+        <span class="eyebrow">Our story</span>
+        <h2 class="display-3">Ten years in the making.</h2>
+        <div class="copy">
+          <p>FORUS began with a simple question: what would digital infrastructure look like if more people and organisations could participate in the value it creates?</p>
+          <p>Years of research, development, partnerships and real-world experimentation have since become a growing technology and infrastructure ecosystem.</p>
+        </div>
+        <a class="link" href="our-story.html">Discover our story ${icon.arrow}</a>
+      </div>
+    </div>
+  </div>
+</section>`;
+}
+
+/* About: the layered statement */
+export function layersMoment() {
+  return `
+<section class="layers" aria-labelledby="layers-h">
+  <div class="layers-top">
+    <div class="container">
+      <span class="eyebrow reveal">Technology underneath. Opportunity above it.</span>
+      <h2 class="display-2 reveal" data-delay="1" id="layers-h">Opportunity above it.</h2>
+      <p class="copy lead reveal" data-delay="2">What people experience: participation, services, trade and connection.</p>
+    </div>
+  </div>
+  <div class="layers-line" aria-hidden="true"><div class="container"><span class="layers-label">The surface</span></div></div>
+  <div class="layers-bottom">
+    <div class="bg-mark" aria-hidden="true">${MARK_WHITE}</div>
+    <div class="container">
+      <h2 class="display-2 reveal">Technology underneath.</h2>
+      <ul class="word-row reveal" data-delay="1"><li>Identity</li><li>Payments</li><li>Platforms</li><li>Data</li><li>Connectivity</li><li>Institutional systems</li></ul>
+      <p class="copy reveal" data-delay="2">Much of the technology that powers an economy sits out of sight. FORUS brings these elements together within an interoperable infrastructure environment designed to make participation simpler and economic networks more connected.</p>
+    </div>
+  </div>
+</section>`;
+}
+
+/* Timeline v2: large dates as the spine */
+export function timeline2(items) {
+  return `<div class="tl2">${items.map(t => `
+    <div class="tl2-item${t.now ? ' is-now' : ''}">
+      <div class="tl2-date"><time class="bigdate" datetime="${t.iso || ''}"><span class="bd-day">${t.day}</span><span class="bd-my">${t.my}</span></time></div>
+      <div class="tl2-spine" aria-hidden="true"><span class="tl2-node"></span></div>
+      <div class="tl2-body">${t.cat ? `<span class="cat">${t.cat}</span>` : ''}<h3>${t.title}</h3><p>${t.copy}</p>${t.href ? `<a class="link" href="${t.href}" style="margin-top:14px">Read the announcement ${icon.arrow}</a>` : ''}</div>
+    </div>`).join('')}</div>`;
+}
+
+/* Capability rows */
+export function capRows(items) {
+  return `<div class="cap-rows">${items.map((c, i) => `
+    <div class="cap-row reveal" data-delay="${(i % 2) + 1}">
+      <span class="num">0${i + 1}</span>
+      <div><h3>${c.title}</h3><p class="cap-copy">${c.copy}</p></div>
+      <ul>${c.points.map(p => `<li>${p}</li>`).join('')}</ul>
+    </div>`).join('')}</div>`;
+}
+
+/* Theme rows (audience pages) */
+export function themeRows(items) {
+  return `<div class="theme-rows">${items.map((t, i) => `<div class="theme-row reveal" data-delay="${(i % 3) + 1}"><span class="num">0${i + 1}</span><h3>${t.title}</h3><p>${t.copy}</p></div>`).join('')}</div>`;
+}
+
+export function heroRing() { return '<div class="hero-ring" aria-hidden="true"><span></span><span></span><span></span></div>'; }

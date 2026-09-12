@@ -60,14 +60,14 @@
     for (var k = 0; k < links.length; k++) {
       var a = nodes[links[k][0]], c = nodes[links[k][1]];
       var wx = ((a.x + c.x) / 2) / W;
-      var alpha = 0.05 + wx * 0.16;
+      var alpha = 0.04 + wx * 0.12;
       ctx.strokeStyle = 'rgba(' + NIGHT + ',' + alpha.toFixed(3) + ')';
       ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(c.x, c.y); ctx.stroke();
     }
     for (i = 0; i < nodes.length; i++) {
       n = nodes[i];
       var w = n.x / W;
-      var al = 0.18 + w * 0.5;
+      var al = 0.14 + w * 0.42;
       if (n.big) {
         ctx.fillStyle = 'rgba(' + MEDIUM + ',' + (al * 0.9).toFixed(3) + ')';
         ctx.beginPath(); ctx.arc(n.x, n.y, 3.2, 0, Math.PI * 2); ctx.fill();

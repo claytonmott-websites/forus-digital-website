@@ -1,4 +1,4 @@
-import { icon, ideas, routes, pillarsSection, featurePanel, implList, newsGrid, ctaFinal, markColour } from '../components.mjs';
+import { icon, todaySection, ladder, routes, pillarsSection, featureSplit, implRows, storyTypo, ctaFinal } from '../components.mjs';
 import { site, pillars, implementations } from '../data.mjs';
 
 const body = `
@@ -19,32 +19,32 @@ const body = `
   </div>
 </section>
 
-<section class="section">
+${todaySection()}
+
+<section class="section" aria-labelledby="what-h">
   <div class="container">
-    <div class="split">
-      <div class="split-sticky reveal">
-        <span class="eyebrow">What FORUS is</span>
-        <h2>Infrastructure designed to connect more.</h2>
-      </div>
-      <div class="reveal" data-delay="1">
-        <div class="copy lead">
+    <div class="statement-xl">
+      <span class="eyebrow reveal">What FORUS is</span>
+      <h2 class="display-2 reveal" data-delay="1" id="what-h">Infrastructure designed<br>to connect more.</h2>
+    </div>
+    <div class="ladder-grid">
+      <div class="ladder-copy reveal" data-delay="2">
+        <div class="copy">
           <p>FORUS brings identity, transactions, digital platforms and connected services together within one interoperable infrastructure environment.</p>
           <p>Built to support different organisations, markets and economic communities, the same underlying infrastructure can enable many different experiences.</p>
         </div>
-        <a class="link" href="infrastructure.html" style="margin-top:32px">Explore the infrastructure ${icon.arrow}</a>
+        <a class="link" href="infrastructure.html">Explore the infrastructure ${icon.arrow}</a>
       </div>
-    </div>
-    <div style="margin-top:clamp(56px,6vw,96px)">
-      ${ideas(pillars.map(p => ({ key: p.key, title: p.title, copy: p.copy })))}
+      ${ladder(pillars.map(p => ({ title: p.title, line: p.line })))}
     </div>
   </div>
 </section>
 
-<section class="section on-paper">
+<section class="section on-paper" aria-labelledby="who-h">
   <div class="container">
     <div class="section-head">
       <span class="eyebrow reveal">Who we work with</span>
-      <h2 class="reveal" data-delay="1">Different organisations. Shared infrastructure.</h2>
+      <h2 class="reveal" data-delay="1" id="who-h">Different organisations. Shared infrastructure.</h2>
     </div>
     ${routes()}
   </div>
@@ -52,57 +52,23 @@ const body = `
 
 ${pillarsSection()}
 
-<section class="section">
-  <div class="container">
+<section class="section" aria-labelledby="action-h">
+  <div class="container has-vlabel">
+    <span class="vlabel" aria-hidden="true">Evidence</span>
     <div class="section-head">
       <span class="eyebrow reveal">Infrastructure in action</span>
-      <h2 class="reveal" data-delay="1">One infrastructure. Many ecosystems.</h2>
+      <h2 class="reveal" data-delay="1" id="action-h">One infrastructure. Many ecosystems.</h2>
       <p class="lead reveal" data-delay="2">FORUS infrastructure can support different organisations, sectors and economic networks without requiring them to operate in the same way or under the same brand.</p>
     </div>
-    ${featurePanel({
-      badge: 'Cooperative ecosystem',
-      title: 'FORUS.coop',
-      copy: '<p>Digital infrastructure for the cooperative economy. The cooperative implementation of FORUS infrastructure, connecting cooperatives, federations and their members through a shared digital environment.</p>',
-      cta: `<div class="btn-group"><a class="btn btn-primary" href="${site.coop}" target="_blank" rel="noopener">Explore FORUS.coop ${icon.ext}</a></div>`,
-      img: 'market', focus: '50% 40%', alt: 'Traders and customers at a busy city market'
-    })}
-    ${implList(implementations.filter(i => i.key !== 'coop').slice(0, 4))}
+    ${featureSplit({ cta: `<div class="btn-group"><a class="btn btn-primary" href="${site.coop}" target="_blank" rel="noopener">Explore FORUS.coop ${icon.ext}</a></div>` })}
+    <div style="margin-top:clamp(56px,6vw,96px)">
+      ${implRows(implementations.filter(i => i.key !== 'coop'))}
+    </div>
     <div class="section-foot reveal"><a class="link" href="infrastructure-in-action.html">See infrastructure in action ${icon.arrow}</a></div>
   </div>
 </section>
 
-<section class="section on-grey story-band">
-  <div class="container">
-    <div class="split reverse">
-      <div class="story-media reveal" style="--focus:50% 45%">
-        <img src="assets/img/agriculture-1200.jpg" srcset="assets/img/agriculture-720.jpg 720w, assets/img/agriculture-1200.jpg 1200w, assets/img/agriculture-1672.jpg 1672w" sizes="(max-width: 860px) 100vw, 50vw" alt="Members of an agricultural cooperative standing together on a hillside" loading="lazy">
-        <span class="mark-tag" aria-hidden="true">${markColour}</span>
-      </div>
-      <div class="reveal" data-delay="1">
-        <span class="eyebrow">Our story</span>
-        <h2>Ten years in the making.</h2>
-        <div class="copy" style="margin-top:28px">
-          <p>FORUS began with a simple question: what would digital infrastructure look like if more people and organisations could participate in the value it creates?</p>
-          <p>That question has shaped years of research, development, partnerships and real-world experimentation across identity, payments, commerce, institutional infrastructure and connected economic systems.</p>
-          <p>Today, those ideas have become a growing technology and infrastructure ecosystem.</p>
-        </div>
-        <a class="link" href="our-story.html" style="margin-top:32px">Discover our story ${icon.arrow}</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow reveal">FORUS Today</span>
-      <h2 class="reveal" data-delay="1">Follow what we’re building.</h2>
-      <p class="lead reveal" data-delay="2">Partnerships, announcements, independent coverage and perspectives from across the FORUS ecosystem.</p>
-    </div>
-    ${newsGrid()}
-    <div class="section-foot reveal"><a class="btn btn-outline" href="forus-today.html">View FORUS Today ${icon.arrow}</a></div>
-  </div>
-</section>
+${storyTypo()}
 
 ${ctaFinal()}
 `;

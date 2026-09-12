@@ -1,4 +1,4 @@
-import { icon, pageHero, split, statement, ideas, defRows, principles, timeline, ctaBand, ctaFinal, blocks } from '../components.mjs';
+import { icon, pageHero, split, statement, ideas, defRows, principles, timeline2, layersMoment, routes, ctaBand, ctaFinal } from '../components.mjs';
 import { site } from '../data.mjs';
 
 const about = {
@@ -11,27 +11,7 @@ ${pageHero({
   lead: 'FORUS is a technology and infrastructure group developing connected digital systems for institutions, networks and communities.',
   ctas: `<a class="btn btn-primary" href="infrastructure.html">Explore the infrastructure ${icon.arrow}</a><a class="btn btn-outline" href="our-story.html">Our story</a>`
 })}
-${split({
-  eyebrow: 'What sits underneath',
-  title: 'Technology underneath. Opportunity above it.',
-  copy: `<p>Much of the technology that powers an economy sits out of sight.</p>
-    <p><strong>Identity. Payments. Platforms. Data. Connectivity. Institutional systems.</strong></p>
-    <p>FORUS brings these elements together within an interoperable infrastructure environment designed to make participation simpler and economic networks more connected.</p>`
-})}
-<section class="section on-paper">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow reveal">Foundations</span>
-      <h2 class="reveal" data-delay="1">Four foundations. One environment.</h2>
-    </div>
-    ${ideas([
-      { key: 'identity', title: 'Identity', copy: 'Trusted points of participation for people, organisations and institutions.' },
-      { key: 'transactions', title: 'Transactions', copy: 'The movement and coordination of value across a network.' },
-      { key: 'platforms', title: 'Platforms', copy: 'Digital experiences for organisations, communities and markets.' },
-      { key: 'connectivity', title: 'Connectivity', copy: 'Interoperability across institutions, systems and services.' }
-    ])}
-  </div>
-</section>
+${layersMoment()}
 ${split({
   eyebrow: 'Corporate role',
   title: 'One organisation. A growing ecosystem.',
@@ -40,14 +20,14 @@ ${split({
   cta: `<div class="btn-group"><a class="btn btn-outline" href="ecosystem.html">Explore the ecosystem ${icon.arrow}</a></div>`,
   reverse: false
 })}
-<section class="section-sm on-paper" style="padding-top:0;background:var(--white)">
+<section class="section-sm" style="padding-top:0">
   <div class="container">
-    ${blocks([
-      { title: 'Our story', copy: 'Built over time. Built with purpose. How a question became an infrastructure ecosystem.', href: 'our-story.html', label: 'Read our story' },
-      { title: 'Purpose and principles', copy: 'Technology should expand participation, not limit it. The vision, mission and principles that guide FORUS.', href: 'purpose-principles.html', label: 'Read our principles' },
-      { title: 'Leadership', copy: 'The people responsible for the FORUS group, its infrastructure and its ecosystem.', href: 'leadership.html', label: 'Meet the leadership' },
-      { title: 'FORUS Today', copy: 'Announcements, partnerships, coverage and perspectives from across the ecosystem.', href: 'forus-today.html', label: 'Follow FORUS' }
-    ], 'four')}
+    ${routes([
+      { title: 'Our story', href: 'our-story.html', line: 'Built over time. Built with purpose.' },
+      { title: 'Purpose and principles', href: 'purpose-principles.html', line: 'Technology should expand participation, not limit it.' },
+      { title: 'Leadership', href: 'leadership.html', line: 'The people responsible for the group, its infrastructure and its ecosystem.' },
+      { title: 'FORUS Today', href: 'forus-today.html', line: 'Announcements, partnerships, coverage and perspectives.' }
+    ])}
   </div>
 </section>
 ${ctaFinal()}
@@ -76,16 +56,15 @@ ${statement({
       <div class="split-sticky reveal">
         <span class="eyebrow">Timeline</span>
         <h2>From a question to an ecosystem.</h2>
-        <p class="copy" style="margin-top:24px;max-width:36ch">An editorial outline of the journey. Entries marked as placeholders await verified dates and detail from the FORUS team.</p>
+        <p class="copy" style="margin-top:24px;max-width:36ch">Verified milestones only. Earlier chapters are added as they are confirmed.</p>
       </div>
       <div>
-        ${timeline([
-          { when: 'Origins', placeholder: true, title: 'A question about participation', copy: 'FORUS begins with a founding idea: infrastructure that lets more people and organisations take part in the value an economy creates. Early work explores identity, payments and the systems that connect them.' },
-          { when: 'Research and development', placeholder: true, title: 'Building the foundations', copy: 'Years of research, development and real-world experimentation across identity, payments, commerce and institutional infrastructure shape the interoperable environment FORUS operates today.' },
-          { when: '2024', title: 'Recognition for WOW Connect', copy: 'The Eastern Cape Transport Tertiary Co-operative, for which WOW Connect was developed, is named Fintech Innovation of the Year at Africa Tech Festival 2024.' },
-          { when: '4 July 2026', title: 'Connect with a Coop', copy: 'On the International Day of Cooperatives, FORUS-Grow, Unati / UAMMCL and The Dream sign a Memorandum of Understanding to build a cooperative-led digital finance, farmer and community impact ecosystem linking Africa and India.' },
-          { when: '10 September 2026', title: 'Partnerships for the cooperative economy', copy: 'FORUS signs a Strategic Partnership Agreement with DotCooperation, becoming its Strategic Promotional and Implementation Partner for Africa, and announces a strategic collaboration with the World Agriculture Forum on the TerraNexus ecosystem.' },
-          { when: 'Today', now: true, title: 'The next phase', copy: 'FORUS Digital is the group behind a growing infrastructure ecosystem, with FORUS.coop as its cooperative implementation and new partnerships across sectors and regions.' }
+        ${timeline2([
+          { day: '10+', my: 'years ago', cat: 'The beginning', title: 'A question about participation', copy: 'FORUS begins with a founding idea: infrastructure that lets more people and organisations take part in the value an economy creates. Years of research, development and real-world experimentation across identity, payments, commerce and institutional infrastructure follow.' },
+          { day: '2024', my: 'Africa Tech<br>Festival', cat: 'Recognition', title: 'Fintech Innovation of the Year', copy: 'The Eastern Cape Transport Tertiary Co-operative, for which WOW Connect was developed, is named Fintech Innovation of the Year at Africa Tech Festival 2024.' },
+          { day: '04', my: 'Jul 2026', iso: '2026-07-04', cat: 'Memorandum of Understanding', title: 'Connect with a Coop', copy: 'On the International Day of Cooperatives, FORUS-Grow, Unati / UAMMCL and The Dream sign a Memorandum of Understanding to build a cooperative-led digital finance, farmer and community impact ecosystem linking Africa and India.', href: 'news-connect-with-a-coop.html' },
+          { day: '10', my: 'Sep 2026', iso: '2026-09-10', cat: 'Partnerships', title: 'Partnerships for the cooperative economy', copy: 'FORUS signs a Strategic Partnership Agreement with DotCooperation, becoming its Strategic Promotional and Implementation Partner for Africa, and announces a strategic collaboration with the World Agriculture Forum on the TerraNexus ecosystem.', href: 'news-dotcooperation-partnership.html' },
+          { day: 'Now', my: 'Next phase', now: true, cat: 'Today', title: 'A growing ecosystem', copy: 'FORUS Digital is the group behind a growing infrastructure ecosystem, with FORUS.coop as its cooperative implementation and new partnerships across sectors and regions.' }
         ])}
       </div>
     </div>

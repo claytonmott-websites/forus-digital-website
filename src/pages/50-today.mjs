@@ -1,4 +1,4 @@
-import { icon, pageHero, newsList, article, ctaFinal, statusTag } from '../components.mjs';
+import { icon, pageHero, bigDate, article, ctaFinal, statusTag } from '../components.mjs';
 import { site, news } from '../data.mjs';
 
 const today = {
@@ -8,6 +8,10 @@ const today = {
 ${pageHero({ eyebrow: 'FORUS Today', title: 'Follow what we’re building.', lead: 'Partnerships, announcements, independent coverage and perspectives from across the FORUS ecosystem.' })}
 <section class="section" style="padding-top:0">
   <div class="container">
+    <a class="today-page-feature reveal" href="${news[0].slug}">
+      <div>${bigDate(news[0], 'xl')}<span class="cat">${news[0].categoryLabel} · Latest</span></div>
+      <div><h2>${news[0].title}</h2><p>${news[0].excerpt}</p><span class="link">Read ${icon.arrow}</span></div>
+    </a>
     <div class="filters reveal" data-filters role="group" aria-label="Filter by category">
       <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
       <button class="filter" type="button" data-filter="newsroom" aria-pressed="false">Newsroom</button>
@@ -15,7 +19,13 @@ ${pageHero({ eyebrow: 'FORUS Today', title: 'Follow what we’re building.', lea
       <button class="filter" type="button" data-filter="partnerships" aria-pressed="false">Partnerships</button>
       <button class="filter" type="button" data-filter="perspectives" aria-pressed="false">Perspectives</button>
     </div>
-    ${newsList(news)}
+    <div class="news-list">
+      ${news.slice(1).map(n => `<a class="news-row v2" href="${n.slug}" data-category="${n.category}">
+        <div>${bigDate(n, 'sm')}<span class="cat">${n.categoryLabel}</span>${n.draft ? '<span class="placeholder" style="margin-top:8px">Draft for approval</span>' : ''}</div>
+        <div><h3>${n.title}</h3><p>${n.excerpt}</p></div>
+        <span class="route-arrow">${icon.arrow}</span>
+      </a>`).join('')}
+    </div>
     <div class="notice" data-filter-empty hidden style="margin-top:32px">Independent press coverage will be listed here as it is published. For media enquiries, contact <a href="mailto:${site.email}?subject=Media%20enquiry" style="text-decoration:underline">${site.email}</a>.</div>
   </div>
 </section>
