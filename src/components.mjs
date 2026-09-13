@@ -139,15 +139,19 @@ export function layout({ file, title, description, body, active = '', theme = 'l
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion')</script>
 <link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/motion.css">
 </head>
 <body>
+<div class="scroll-progress" aria-hidden="true"></div>
 ${header(active, theme)}
 <main id="main">
 ${body}
 </main>
 ${footer()}
 <script src="assets/js/site.js" defer></script>
+<script src="assets/js/motion.js" defer></script>
 ${scripts.map(s => `<script src="${s}" defer></script>`).join('\n')}
 </body>
 </html>
@@ -236,51 +240,53 @@ export function routes(items = audiences) {
 export function pillarsFigure() {
   const cx = 300, cy = 300, R = 214;
   const pts = [[cx, cy - R, 'Identity'], [cx + R, cy, 'Transactions'], [cx, cy + R, 'Platforms'], [cx - R, cy, 'Connectivity']];
-  const spokes = pts.map(p => `<line class="p-spoke" x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}"/>`).join('');
+  const spokes = pts.map(p => `<line class="p-spoke" x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}" pathLength="1"/>`).join('');
   const flows = pts.map(p => `<line class="p-flow" x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}"/>`).join('');
   const nodes = pts.map((p, i) => {
     const anchor = i === 1 ? 'start' : i === 3 ? 'end' : 'middle';
     const lx = i === 1 ? p[0] + 34 : i === 3 ? p[0] - 34 : p[0];
     const ly = i === 0 ? p[1] - 34 : i === 2 ? p[1] + 44 : p[1] + 5;
-    return `<circle class="p-node" cx="${p[0]}" cy="${p[1]}" r="18"/><circle class="p-node-dot" cx="${p[0]}" cy="${p[1]}" r="4"/><text class="p-label" x="${lx}" y="${ly}" text-anchor="${anchor}">${p[2]}</text>`;
+    return `<g class="p-nodegrp" style="--i:${i}"><circle class="p-node" cx="${p[0]}" cy="${p[1]}" r="18"/><circle class="p-node-dot" cx="${p[0]}" cy="${p[1]}" r="4"/><text class="p-label" x="${lx}" y="${ly}" text-anchor="${anchor}">${p[2]}</text></g>`;
   }).join('');
   const mark = MARK_WHITE.replace('<svg ', '<svg x="238" y="238" width="124" height="124" class="p-mark" ');
   return `
     <div class="pillars-figure reveal" aria-hidden="true">
       <svg viewBox="0 0 600 600">
-        <circle class="p-ring" cx="${cx}" cy="${cy}" r="${R}"/>
-        <circle class="p-ring inner" cx="${cx}" cy="${cy}" r="96"/>
-        <circle class="p-ring" cx="${cx}" cy="${cy}" r="${R + 60}" stroke-dasharray="2 10"/>
+        <circle class="p-ring" cx="${cx}" cy="${cy}" r="${R}" pathLength="1"/>
+        <circle class="p-ring inner" cx="${cx}" cy="${cy}" r="96" pathLength="1"/>
+        <circle class="p-ring outer" cx="${cx}" cy="${cy}" r="${R + 60}" stroke-dasharray="2 10"/>
         ${spokes}
-        <g>${flows}</g>
+        <g class="p-flows">${flows}</g>
         ${nodes}
-        <circle cx="${cx}" cy="${cy}" r="84" fill="#1E254A" stroke="rgba(255,255,255,.3)"/>
-        ${mark}
+        <g class="p-center"><circle cx="${cx}" cy="${cy}" r="84" fill="#1E254A" stroke="rgba(255,255,255,.3)"/>${mark}</g>
       </svg>
     </div>`;
 }
 
-export function pillarsSection({ eyebrow = 'Infrastructure', title = 'One infrastructure. Many possibilities.', cta = true } = {}) {
+export function pillarsSection({ eyebrow = 'Infrastructure', title = 'One infrastructure. Many possibilities.', cta = true, list = true, line = '' } = {}) {
   return `
+<div class="pillars-scene" data-scene="pin">
 <section class="section on-dark pillars">
   <div class="bg-mark" aria-hidden="true">${MARK_WHITE}</div>
   <div class="container">
     <div class="pillars-grid">
       <div>
         <span class="eyebrow reveal">${eyebrow}</span>
-        <h2 class="reveal" data-delay="1">${title}</h2>
-        <div class="pillar-list" style="margin-top:48px">
-          ${pillars.map((p, i) => `<div class="pillar reveal" data-delay="${i + 1}">
+        <h2 class="reveal${list ? '' : ' pillars-big'}" data-delay="1">${title}</h2>
+        ${line ? `<p class="lead reveal" data-delay="2" style="margin-top:28px;max-width:34ch">${line}</p>` : ''}
+        ${list ? `<div class="pillar-list" style="margin-top:48px">
+          ${pillars.map((p, i) => `<div class="pillar reveal" data-delay="${i + 1}" style="--i:${i}">
             <span class="pillar-num">0${i + 1}</span>
             <div><h3>${p.title}</h3><p>${p.line}</p></div>
           </div>`).join('')}
-        </div>
+        </div>` : ''}
         ${cta ? `<div class="btn-group reveal" style="margin-top:40px"><a class="btn btn-primary" href="infrastructure.html">Explore the infrastructure ${icon.arrow}</a></div>` : ''}
       </div>
       ${pillarsFigure()}
     </div>
   </div>
-</section>`;
+</section>
+</div>`;
 }
 
 export function featurePanel({ badge, title, copy, cta, img, focus = '50% 50%', alt }) {
@@ -478,7 +484,7 @@ export function todaySection(items = news.filter(n => !n.draft).slice(0, 3)) {
   <div class="container has-vlabel">
     <span class="vlabel" aria-hidden="true">Current activity</span>
     <div class="today-head">
-      <span class="eyebrow" id="today-h">FORUS Today</span>
+      <span class="eyebrow" id="today-h"><span class="live-dot" aria-hidden="true"></span>FORUS Today</span>
       <p class="today-sub">Latest from across the FORUS ecosystem.</p>
       <a class="link" href="forus-today.html">View FORUS Today ${icon.arrow}</a>
     </div>
@@ -509,7 +515,7 @@ export function featureSplit({ eyebrow = 'Cooperative ecosystem', status = 'live
   return `
     <div class="feature-split">
       <div class="fs-media reveal" style="--focus:${focus}">
-        <img src="assets/img/${img}-1200.jpg" srcset="assets/img/${img}-720.jpg 720w, assets/img/${img}-1200.jpg 1200w, assets/img/${img}-1672.jpg 1672w" sizes="(max-width: 860px) 100vw, 50vw" alt="${esc(alt)}" loading="lazy">
+        <div class="fs-clip"><img src="assets/img/${img}-1200.jpg" srcset="assets/img/${img}-720.jpg 720w, assets/img/${img}-1200.jpg 1200w, assets/img/${img}-1672.jpg 1672w" sizes="(max-width: 860px) 100vw, 50vw" alt="${esc(alt)}" loading="lazy"></div>
         <span class="fs-ring" aria-hidden="true"></span>
         <span class="fs-mark" aria-hidden="true">${MARK_COLOUR}</span>
       </div>
@@ -526,7 +532,7 @@ export function featureSplit({ eyebrow = 'Cooperative ecosystem', status = 'live
 export function implRows(items) {
   return `
     <div class="impl-rows">
-      ${items.map((it, i) => `<a class="impl-row reveal" data-delay="${Math.min(i + 1, 4)}" href="${it.href}"${it.ext ? ' target="_blank" rel="noopener"' : ''}>
+      ${items.map((it, i) => `<a class="impl-row reveal" data-delay="${Math.min(i + 1, 4)}" style="--i:${i}" href="${it.href}"${it.ext ? ' target="_blank" rel="noopener"' : ''}>
         <span class="impl-num">0${i + 1}</span>
         <div><h3>${it.title}</h3><p class="impl-where">${it.where}</p></div>
         ${statusTag(it.status, it.statusLabel)}
@@ -539,9 +545,10 @@ export function implRows(items) {
 export function storyTypo() {
   return `
 <section class="section on-grey story-typo">
+  <div class="story-mark" aria-hidden="true">${MARK_COLOUR}</div>
   <div class="container">
     <div class="story-grid">
-      <div class="story-num reveal" aria-hidden="true">10<small>years in the making</small></div>
+      <div class="story-num reveal" aria-hidden="true" data-count="10">10<small>years in the making</small></div>
       <div class="story-body reveal" data-delay="1">
         <span class="eyebrow">Our story</span>
         <h2 class="display-3">Ten years in the making.</h2>
@@ -605,3 +612,141 @@ export function themeRows(items) {
 }
 
 export function heroRing() { return '<div class="hero-ring" aria-hidden="true"><span></span><span></span><span></span></div>'; }
+
+
+/* ---------- Motion pass components ---------- */
+const MARK_PATHS = [...MARK_COLOUR.matchAll(/<path fill="([^"]+)" d="([^"]+)"\/>/g)].map(m => ({ fill: m[1], d: m[2] }));
+/* Approximate centroid of each arrow in the mark's own coordinate space (viewBox 1503.72 x 1500). */
+const ARROW_CENTRES = [[752, 1253], [752, 246], [1257, 749], [246, 750], [1132, 333], [332, 333], [1165, 1164], [335, 1165]];
+
+/* Hero stage: the eight arrows of the real mark start scattered and converge as you scroll. */
+export function heroStage() {
+  if (MARK_PATHS.length !== 8) throw new Error('Expected eight arrow paths in the FORUS mark');
+  return `
+<section class="stage-hero" data-scene="pin" data-hero-stage>
+  <div class="stage-sticky">
+    <div class="hero-network" aria-hidden="true"></div>
+    <div class="hero-mark-wrap" aria-hidden="true">
+      <svg class="hero-arrows" viewBox="0 0 1503.72 1500"><g class="arw-all">${MARK_PATHS.map(p => `<path fill="${p.fill}" d="${p.d}"/>`).join('')}</g></svg>
+    </div>
+    <div class="container hero-copy">
+      <span class="eyebrow hero-in">FORUS Digital</span>
+      <h1 class="display" data-split>The infrastructure layer for inclusive digital economies.</h1>
+      <p class="lead hero-in" data-delay="2">FORUS builds the digital infrastructure that helps institutions, networks and communities connect, coordinate and participate in shared economic opportunity.</p>
+      <div class="btn-group hero-in" data-delay="3">
+        <a class="btn btn-primary" href="about.html">Explore FORUS ${icon.arrow}</a>
+        <a class="btn btn-outline" href="partner.html">Partner with FORUS</a>
+      </div>
+    </div>
+    <p class="hero-tagline"><span class="container" style="display:block"><span>Connect the network.</span> <span>Coordinate value.</span> <span>Unlock shared opportunity.</span></span></p>
+    <div class="container hero-foot" aria-hidden="true"><span class="scroll-cue">Scroll to connect <i></i></span></div>
+  </div>
+</section>`;
+}
+
+/* What FORUS is: intro, then a pinned four-step build of the foundations. */
+export function pillarsScroll() {
+  const colours = ['#FBBA00', '#F5971B', '#DD062B', '#692482', '#0844AF', '#027DB8', '#81CAC9', '#8DBF2E'];
+  const R = 230, c = 300;
+  const pts = colours.map((col, i) => { const a = (-90 + i * 45) * Math.PI / 180; return [c + R * Math.cos(a), c + R * Math.sin(a), col]; });
+  const ring = pts.map((p, i) => `${i ? 'L' : 'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ') + ' Z';
+  const plane = (y, k, fill) => `<polygon class="dg-plane" style="--k:${k}" fill="${fill}" points="300,${y - 24} 390,${y} 300,${y + 24} 210,${y}"/>`;
+  return `
+<section class="scene-pillars" aria-labelledby="what-h">
+  <div class="container pl-intro">
+    <div class="split">
+      <div>
+        <span class="eyebrow reveal">What FORUS is</span>
+        <h2 class="display-2" id="what-h">Infrastructure designed to connect more.</h2>
+      </div>
+      <div class="reveal" data-delay="1">
+        <div class="copy lead">
+          <p>FORUS brings identity, transactions, digital platforms and connected services together within one interoperable infrastructure environment.</p>
+          <p>Built to support different organisations, markets and economic communities, the same underlying infrastructure can enable many different experiences.</p>
+        </div>
+        <a class="link" href="infrastructure.html">Explore the infrastructure ${icon.arrow}</a>
+      </div>
+    </div>
+  </div>
+  <div class="pl-track" data-scene="pin" data-steps="4">
+    <div class="pl-sticky">
+      <div class="container pl-grid">
+        <div class="pl-left">
+          <div class="pl-count" aria-hidden="true"><span class="pl-roll"><span>01<br>02<br>03<br>04</span></span><span>/ 04</span><span class="pl-label">Four foundations</span></div>
+          <div class="pl-words">
+            ${pillars.map((p, i) => `<div class="pl-word${i === 0 ? ' is-active' : ''}" data-step-item><h3 data-split="chars" data-split-manual>${p.title}</h3><p>${p.line}</p></div>`).join('')}
+          </div>
+          <div class="pl-progress" aria-hidden="true">${[0, 1, 2, 3].map(i => `<i data-range="${i / 4} ${(i + 1) / 4}"></i>`).join('')}</div>
+        </div>
+        <div class="pl-figure" aria-hidden="true">
+          <svg viewBox="0 0 600 600">
+            <g data-range="0 .18">
+              <circle class="dg-stroke dg-faint" cx="300" cy="300" r="122" pathLength="1"/>
+              <circle class="dg-stroke" cx="300" cy="300" r="64" pathLength="1"/>
+              <circle class="dg-pop" cx="300" cy="300" r="11" fill="#1E254A"/>
+              <g class="dg-fade"><circle class="dg-pulse" cx="300" cy="300" r="64"/></g>
+            </g>
+            <g data-range=".26 .44">
+              <line class="dg-stroke" x1="236" y1="300" x2="70" y2="300" pathLength="1"/>
+              <line class="dg-stroke" x1="364" y1="300" x2="530" y2="300" pathLength="1"/>
+              <g class="dg-pop"><circle cx="70" cy="300" r="20" fill="#fff" stroke="#1E254A" stroke-width="1.5"/><circle cx="70" cy="300" r="6" fill="#027DB8"/></g>
+              <g class="dg-pop"><circle cx="530" cy="300" r="20" fill="#fff" stroke="#1E254A" stroke-width="1.5"/><circle cx="530" cy="300" r="6" fill="#0844AF"/></g>
+              <g class="dg-fade"><circle class="dg-dot" cx="70" cy="300" r="5"/><circle class="dg-dot d2" cx="530" cy="300" r="5"/></g>
+            </g>
+            <g data-range=".51 .69">
+              ${plane(496, 0, 'rgba(129,202,201,.45)')}
+              ${plane(474, 1, 'rgba(2,125,184,.28)')}
+              ${plane(452, 2, 'rgba(255,255,255,.92)')}
+            </g>
+            <g data-range=".76 .9">
+              <path class="dg-stroke" d="${ring}" pathLength="1"/>
+              ${pts.map(p => `<line class="dg-stroke dg-faint" x1="300" y1="300" x2="${p[0].toFixed(1)}" y2="${p[1].toFixed(1)}" pathLength="1"/>`).join('')}
+            </g>
+            ${pts.map((p, i) => `<g class="dg-node" data-range="${(.8 + i * .022).toFixed(3)} ${(.86 + i * .022).toFixed(3)}"><circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="24" fill="none" stroke="${p[2]}" stroke-opacity=".35" stroke-width="1.5"/><circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="12" fill="${p[2]}"/></g>`).join('')}
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`;
+}
+
+/* Breadth band: two rows of type that move against each other with scroll. */
+export function tagBand(words = ['Cooperatives', 'Financial institutions', 'Governments', 'Public programmes', 'Enterprises', 'Industry networks', 'Technology partners']) {
+  const mark = MARK_COLOUR.replace('<svg ', '<svg aria-hidden="true" ');
+  const row = (list) => list.map(w => `<span>${w}${mark}</span>`).join('');
+  const r1 = row(words), r2 = row([...words].reverse());
+  return `
+<section class="tag-band">
+  <p class="visually-hidden">FORUS infrastructure can support ${words.join(', ').toLowerCase()}.</p>
+  <div class="tb-row r1" aria-hidden="true">${r1}${r1}${r1}</div>
+  <div class="tb-row r2" aria-hidden="true">${r2}${r2}${r2}</div>
+</section>`;
+}
+
+/* Who we work with: a horizontal track pinned on desktop. Each panel carries one arrow of the mark in its division colour. */
+export function audienceTrack(items = audiences) {
+  const pick = [5, 7, 4, 1, 2, 6];
+  return `
+<section class="scene-aud on-dark" aria-labelledby="aud-h">
+  <div class="aud-wrap" data-scene="pin" data-htrack>
+    <div class="aud-sticky">
+      <div class="aud-track">
+        <div class="aud-intro">
+          <span class="eyebrow">Who we work with</span>
+          <h2 id="aud-h">Different organisations. Shared infrastructure.</h2>
+          <p>Six routes into FORUS. Find yours.</p>
+          <span class="aud-hint" aria-hidden="true">Scroll <i></i></span>
+        </div>
+        ${items.map((a, i) => {
+          const k = pick[i % pick.length], [ax, ay] = ARROW_CENTRES[k];
+          return `<a class="aud-panel" href="${a.href}" style="--accent:${MARK_PATHS[k].fill}">
+          <div class="aud-body"><span class="aud-num">0${i + 1}</span><h3>${a.title}</h3><p>${a.line}</p><span class="aud-go">Explore ${icon.arrow}</span></div>
+          <div class="aud-art" aria-hidden="true"><svg viewBox="0 0 1503.72 1500" style="--ax:-${(ax / 1503.72 * 100).toFixed(2)}%;--ay:-${(ay / 1500 * 100).toFixed(2)}%">${MARK_PATHS.map((p, j) => `<path${j === k ? ' class="on"' : ''} d="${p.d}"/>`).join('')}</svg></div>
+        </a>`;
+        }).join('')}
+      </div>
+    </div>
+  </div>
+</section>`;
+}

@@ -1,6 +1,6 @@
 # forus.digital · corporate website rebuild
 
-**Version 1.1 · 12 September 2026 · Refinement pass: activity layer and art direction**
+**Version 1.2 · 13 September 2026 · Motion pass: scroll-built scenes, parallax and the eight-arrow hero**
 
 A complete, responsive, working prototype of the new FORUS Digital corporate website. This is a full strategic redesign: nothing from the old site's structure, copy, hierarchy or layout is inherited. The old site and the forus.coop review build were used only for brand assets, verified facts and technical convention.
 
@@ -40,6 +40,30 @@ node src/build.mjs
 ```
 
 The build refuses to write a page that contains an em dash.
+
+## Motion layer (version 1.2)
+
+The site now builds itself as you scroll. Everything lives in two files, `site/assets/css/motion.css` and `site/assets/js/motion.js`, and is scoped to `html.motion`. The page head only sets that class when the visitor has not asked for reduced motion, and every CSS custom property defaults to its finished state, so the site is complete and readable without JavaScript or with motion turned off.
+
+**How the engine works.** Any element with `data-scene="pin"` (a tall wrapper with a sticky child) or `data-scene="view"` receives `--p` (build progress), `--pe` (entry progress) and `--pv` (progress through the viewport). Children with `data-range="a b"` receive `--t`, a 0 to 1 value between those two points of the scene. `data-steps` switches `.is-active` across `[data-step-item]` children. `data-parallax="0.1"` drifts an element against its parent. `data-count` counts up when seen. Headings are split into words (or characters with `data-split="chars"`) and rise into place. Shared components are wired automatically, so inner pages pick this up without template changes.
+
+**Homepage scenes.**
+
+| Scene | What happens |
+|---|---|
+| Hero | The eight arrows of the real FORUS mark fly in scattered, drift, then converge into the mark as you scroll. The copy lifts away, the mark centres and the strategic line builds beneath it. |
+| FORUS Today | Slides up over the hero as a rounded sheet, with a pulsing live indicator. |
+| What FORUS is | Pinned four-step build. Each foundation takes over in large type while a diagram assembles: identity ring, value moving between two nodes, stacked platform planes, then eight nodes in the division colours connecting into a network. |
+| Breadth band | Two rows of large type, one solid and one outlined, move against each other with scroll. |
+| Who we work with | Pinned horizontal track on desktop. Each audience panel carries one arrow of the mark in its division colour, drifting with the scroll. Stacks vertically on mobile. |
+| Infrastructure | The dark section opens from an inset rounded frame to full bleed, then pins while the figure draws its rings and spokes, pops its nodes and turns the mark. |
+| Evidence | The FORUS.coop photograph opens from a small circle; implementation rows slide in one after another. |
+| Story | The numeral counts up to ten while the mark turns slowly behind it. |
+| Closing CTA | The three lines of the strategic line arrive from alternate sides. |
+
+A top progress bar uses the eight division colours. Buttons and row arrows are subtly magnetic on pointer devices.
+
+**Tuning.** Scene lengths are set in `motion.css` (for example `.motion .stage-hero { height: 220vh }` and `.motion .pl-track { height: 420vh }`). Shorter heights make scenes play faster. Pinned scenes fall back to normal flow on small or short screens where noted in the responsive block.
 
 ## Homepage order (version 1.1)
 

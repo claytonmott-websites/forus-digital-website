@@ -1,56 +1,18 @@
-import { icon, todaySection, ladder, routes, pillarsSection, featureSplit, implRows, storyTypo, ctaFinal } from '../components.mjs';
-import { site, pillars, implementations } from '../data.mjs';
+import { icon, heroStage, todaySection, pillarsScroll, tagBand, audienceTrack, pillarsSection, featureSplit, implRows, storyTypo, ctaFinal } from '../components.mjs';
+import { site, implementations } from '../data.mjs';
 
 const body = `
-<section class="hero-home">
-  <div class="hero-network" aria-hidden="true"></div>
-  <div class="container">
-    <span class="eyebrow hero-in">FORUS Digital</span>
-    <h1 class="display hero-in" data-delay="1">The infrastructure layer for inclusive digital economies.</h1>
-    <p class="lead hero-in" data-delay="2">FORUS builds the digital infrastructure that helps institutions, networks and communities connect, coordinate and participate in shared economic opportunity.</p>
-    <div class="btn-group hero-in" data-delay="3">
-      <a class="btn btn-primary" href="about.html">Explore FORUS ${icon.arrow}</a>
-      <a class="btn btn-outline" href="partner.html">Partner with FORUS</a>
-    </div>
-    <div class="hero-brandline hero-in" data-delay="3">
-      <span>${site.tagline}</span>
-      <span class="scroll-cue">Scroll ${icon.down}</span>
-    </div>
-  </div>
-</section>
+${heroStage()}
 
 ${todaySection()}
 
-<section class="section" aria-labelledby="what-h">
-  <div class="container">
-    <div class="statement-xl">
-      <span class="eyebrow reveal">What FORUS is</span>
-      <h2 class="display-2 reveal" data-delay="1" id="what-h">Infrastructure designed<br>to connect more.</h2>
-    </div>
-    <div class="ladder-grid">
-      <div class="ladder-copy reveal" data-delay="2">
-        <div class="copy">
-          <p>FORUS brings identity, transactions, digital platforms and connected services together within one interoperable infrastructure environment.</p>
-          <p>Built to support different organisations, markets and economic communities, the same underlying infrastructure can enable many different experiences.</p>
-        </div>
-        <a class="link" href="infrastructure.html">Explore the infrastructure ${icon.arrow}</a>
-      </div>
-      ${ladder(pillars.map(p => ({ title: p.title, line: p.line })))}
-    </div>
-  </div>
-</section>
+${pillarsScroll()}
 
-<section class="section on-paper" aria-labelledby="who-h">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow reveal">Who we work with</span>
-      <h2 class="reveal" data-delay="1" id="who-h">Different organisations. Shared infrastructure.</h2>
-    </div>
-    ${routes()}
-  </div>
-</section>
+${tagBand()}
 
-${pillarsSection()}
+${audienceTrack()}
+
+${pillarsSection({ list: false, title: 'One infrastructure. Many possibilities.', line: 'Identity, transactions, platforms and connectivity, drawn together in one interoperable environment.' })}
 
 <section class="section" aria-labelledby="action-h">
   <div class="container has-vlabel">
