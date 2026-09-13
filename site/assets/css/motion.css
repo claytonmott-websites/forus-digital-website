@@ -263,3 +263,8 @@ html:not(.motion) .pl-count, html:not(.motion) .pl-progress { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .pl-figure .dg-pulse, .pl-figure .dg-dot, .live-dot::after, .hero-foot .scroll-cue svg, .hero-foot .scroll-cue i::after { animation: none; }
 }
+
+/* FORUS Today imagery: wipe in from the left and settle from a slight zoom */
+.motion .today .today-media { clip-path: inset(0 calc((1 - clamp(0, calc(var(--pe, 1) * 1.6 - .25), 1)) * 100%) 0 0 round 8px); }
+.motion .today .today-media img { scale: calc(1.14 - clamp(0, var(--pe, 1), 1) * .14); }
+.motion .today .today-feature:hover .today-media img { scale: 1.06; }

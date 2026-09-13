@@ -1,4 +1,4 @@
-import { icon, pageHero, bigDate, article, ctaFinal, statusTag } from '../components.mjs';
+import { icon, pageHero, bigDate, newsImg, article, ctaFinal, statusTag } from '../components.mjs';
 import { site, news } from '../data.mjs';
 
 const today = {
@@ -9,8 +9,8 @@ ${pageHero({ eyebrow: 'FORUS Today', title: 'Follow what we’re building.', lea
 <section class="section" style="padding-top:0">
   <div class="container">
     <a class="today-page-feature reveal" href="${news[0].slug}">
-      <div>${bigDate(news[0], 'xl')}<span class="cat">${news[0].categoryLabel} · Latest</span></div>
-      <div><h2>${news[0].title}</h2><p>${news[0].excerpt}</p><span class="link">Read ${icon.arrow}</span></div>
+      <div class="tpf-media">${newsImg(news[0], '(max-width: 860px) 100vw, 40vw', 'eager')}</div>
+      <div>${bigDate(news[0], 'xl')}<span class="cat">${news[0].categoryLabel} · Latest</span><h2>${news[0].title}</h2><p>${news[0].excerpt}</p><span class="link">Read ${icon.arrow}</span></div>
     </a>
     <div class="filters reveal" data-filters role="group" aria-label="Filter by category">
       <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
@@ -23,6 +23,7 @@ ${pageHero({ eyebrow: 'FORUS Today', title: 'Follow what we’re building.', lea
       ${news.slice(1).map(n => `<a class="news-row v2" href="${n.slug}" data-category="${n.category}">
         <div>${bigDate(n, 'sm')}<span class="cat">${n.categoryLabel}</span>${n.draft ? '<span class="placeholder" style="margin-top:8px">Draft for approval</span>' : ''}</div>
         <div><h3>${n.title}</h3><p>${n.excerpt}</p></div>
+        <div class="row-thumb">${newsImg(n, '176px')}</div>
         <span class="route-arrow">${icon.arrow}</span>
       </a>`).join('')}
     </div>

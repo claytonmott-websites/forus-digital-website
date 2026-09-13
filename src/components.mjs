@@ -476,6 +476,12 @@ export function bigDate(n, size = '') {
   return `<time class="bigdate ${size}" datetime="${n.date}"><span class="bd-day">${n.day}</span><span class="bd-my">${n.my.replace(' ', '<br>')}</span></time>`;
 }
 
+/* Editorial image for a FORUS Today item, using the approved photography set */
+export function newsImg(n, sizes = '(max-width: 860px) 100vw, 50vw', loading = 'lazy') {
+  if (!n.image) return '';
+  return `<img src="assets/img/${n.image}-1200.jpg" srcset="assets/img/${n.image}-720.jpg 720w, assets/img/${n.image}-1200.jpg 1200w" sizes="${sizes}" alt="${esc(n.alt || '')}" loading="${loading}" style="--focus:${n.focus || '50% 50%'}">`;
+}
+
 /* Homepage activity layer: one featured item, two quieter items */
 export function todaySection(items = news.filter(n => !n.draft).slice(0, 3)) {
   const [f, ...rest] = items;
@@ -490,6 +496,7 @@ export function todaySection(items = news.filter(n => !n.draft).slice(0, 3)) {
     </div>
     <div class="today-grid">
       <a class="today-feature reveal" href="${f.slug}">
+        ${f.image ? `<div class="today-media">${newsImg(f, '(max-width: 860px) 100vw, 56vw')}</div>` : ''}
         <div class="today-meta">${bigDate(f)}<span class="cat">${f.categoryLabel}</span></div>
         <h2>${f.short}</h2>
         <span class="link">Read ${icon.arrow}</span>
@@ -498,6 +505,7 @@ export function todaySection(items = news.filter(n => !n.draft).slice(0, 3)) {
         ${rest.map((n, i) => `<a class="today-item reveal" data-delay="${i + 1}" href="${n.slug}">
           ${bigDate(n, 'sm')}
           <div><span class="cat">${n.categoryLabel}</span><h3>${n.short}</h3></div>
+          ${n.image ? `<div class="today-thumb">${newsImg(n, '96px')}</div>` : ''}
         </a>`).join('')}
       </div>
     </div>

@@ -65,6 +65,10 @@ A top progress bar uses the eight division colours. Buttons and row arrows are s
 
 **Tuning.** Scene lengths are set in `motion.css` (for example `.motion .stage-hero { height: 220vh }` and `.motion .pl-track { height: 420vh }`). Shorter heights make scenes play faster. Pinned scenes fall back to normal flow on small or short screens where noted in the responsive block.
 
+## FORUS Today imagery
+
+Each item in `src/data.mjs` carries `image`, `focus` and `alt`, drawn from the approved photography set in `site/assets/img/`. The homepage featured story shows a large image that wipes in on scroll, the two side stories show small thumbnails, and the FORUS Today page shows an image on the lead story and thumbnails on list rows (hidden on mobile). The approved press release banners were not used because they carry FORUS Digital Cooperative branding and their own headline text. To use announcement-specific artwork later, add the file to `site/assets/img/` at 720 and 1200px wide and point the item's `image` at it.
+
 ## Homepage order (version 1.1)
 
 Hero · FORUS Today activity layer · What FORUS is · Who we work with · Infrastructure · Infrastructure in action · Our story · Final CTA. The activity layer shows one featured item and two quieter headlines with large date numerals, drawn from the same verified items as the FORUS Today page; the former news card section at the foot of the page was removed so nothing appears twice. The FORUS Today dropdown carries a small "Latest activity" column with the two most recent items.

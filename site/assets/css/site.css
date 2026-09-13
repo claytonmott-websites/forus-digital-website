@@ -984,3 +984,31 @@ form.is-sent { display: none; }
   .news-row.v2 { grid-template-columns: 1fr; }
   .fs-media .fs-ring { display: none; }
 }
+
+/* --------------------------------------------------------------------------
+   FORUS Today imagery
+   -------------------------------------------------------------------------- */
+.today-media, .tpf-media, .today-thumb, .row-thumb { position: relative; overflow: hidden; border-radius: var(--radius); background: var(--light-grey); }
+.today-media img, .tpf-media img, .today-thumb img, .row-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: var(--focus, 50% 50%); transition: scale 1.2s cubic-bezier(.16,1,.3,1); }
+.today-media { aspect-ratio: 16 / 9; margin-bottom: 28px; }
+.today-feature:hover .today-media img, .today-page-feature:hover .tpf-media img, .today-item:hover .today-thumb img, .news-row:hover .row-thumb img { scale: 1.06; }
+.today-item { grid-template-columns: auto minmax(0, 1fr) 96px; }
+.today-thumb { width: 96px; aspect-ratio: 1; border-radius: 6px; }
+.today-page-feature { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; }
+.tpf-media { aspect-ratio: 4 / 3; }
+.today-page-feature h2 { margin-top: 20px; }
+.news-row.v2 { grid-template-columns: 160px minmax(0, 1fr) 176px 48px; }
+.row-thumb { width: 176px; aspect-ratio: 16 / 10; border-radius: 6px; }
+@media (max-width: 860px) {
+  .today-page-feature { grid-template-columns: minmax(0, 1fr); }
+  .news-row.v2 { grid-template-columns: minmax(0, 1fr); }
+  .news-row.v2 .row-thumb { display: none; }
+  .today-item { grid-template-columns: auto minmax(0, 1fr) 72px; }
+  .today-thumb { width: 72px; }
+}
+@media (max-width: 860px) {
+  .today-item { grid-template-columns: minmax(0, 1fr) 72px; gap: 12px 16px; }
+  .today-item .bigdate { grid-column: 1; grid-row: 1; }
+  .today-item > div:not(.today-thumb) { grid-column: 1; grid-row: 2; }
+  .today-item .today-thumb { grid-column: 2; grid-row: 1 / span 2; align-self: start; }
+}
